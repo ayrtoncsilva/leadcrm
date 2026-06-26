@@ -6,6 +6,7 @@ import { dirname, join } from 'path';
 import contactRoutes  from './src/routes/contacts.js';
 import authRoutes     from './src/routes/auth.js';
 import calendarRoutes from './src/routes/calendar.js';
+import sheetsRoutes   from './src/routes/sheets.js';
 import { initDb } from './src/config/database.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -29,6 +30,7 @@ app.use(async (_req, _res, next) => {
 app.use('/api/contacts',  contactRoutes);
 app.use('/api/v1/auth',   authRoutes);
 app.use('/api/calendar',  calendarRoutes);
+app.use('/api/sheets',    sheetsRoutes);
 
 // Local: sobe o servidor normalmente
 if (process.env.NODE_ENV !== 'production') {

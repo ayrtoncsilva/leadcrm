@@ -34,6 +34,7 @@ export async function initDb() {
     `ALTER TABLE contacts ADD COLUMN faltou             TEXT NOT NULL DEFAULT ''`,
     `ALTER TABLE contacts ADD COLUMN datas_agendamento  TEXT NOT NULL DEFAULT '[]'`,
     `ALTER TABLE contacts ADD COLUMN modulos            TEXT NOT NULL DEFAULT '[]'`,
+    `ALTER TABLE contacts ADD COLUMN placas             TEXT NOT NULL DEFAULT ''`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* coluna já existe */ }

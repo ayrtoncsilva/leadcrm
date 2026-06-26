@@ -15,19 +15,22 @@ function toPlain(row) {
     faltou: row.faltou ?? '',
     datas_agendamento: JSON.parse(row.datas_agendamento || '[]'),
     modulos: JSON.parse(row.modulos || '[]'),
+    placas: row.placas ?? '',
   };
 }
 
-const ALL_FIELDS = 'data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento, modulos';
-const PLACEHOLDERS = '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?';
+const ALL_FIELDS = 'data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento, modulos, placas';
+const PLACEHOLDERS = '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?';
 
-function toArgs({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento, modulos }) {
+function toArgs({ data, nome, origem, qualificado, ativado, respondeu, vendido,
+                  agendado, remarcado, faltou, datas_agendamento, modulos, placas }) {
   return [
     data, nome, origem,
     qualificado ?? '', ativado ?? '', respondeu ?? '', vendido ?? '',
     agendado ?? '', remarcado ?? '', faltou ?? '',
     JSON.stringify(Array.isArray(datas_agendamento) ? datas_agendamento : []),
     JSON.stringify(Array.isArray(modulos) ? modulos : []),
+    placas ?? '',
   ];
 }
 

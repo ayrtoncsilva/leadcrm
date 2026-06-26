@@ -8,4 +8,7 @@ export function createOAuthClient() {
   );
 }
 
-export const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+export const SCOPES = [
+  'https://www.googleapis.com/auth/calendar.readonly',
+  'https://www.googleapis.com/auth/spreadsheets.readonly',
+];

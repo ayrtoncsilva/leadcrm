@@ -132,6 +132,18 @@
 
   /* ── MÓDULOS TAGS (tabela) ── */
   .mod-tag { display: inline-block; padding: 1px 7px; background: var(--brand-light); color: var(--brand); border-radius: 4px; font-size: 10px; font-weight: 600; margin-right: 3px; margin-top: 2px; }
+  .placas-tag { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px; background: #e0f2fe; color: #0369a1; border-radius: 4px; font-size: 10px; font-weight: 600; margin-top: 2px; }
+
+  /* ── FROTA DISTRIBUIÇÃO ── */
+  .frota-card { background: #fff; border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); margin-bottom: 20px; }
+  .frota-card-hdr { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .frota-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .frota-row:last-child { margin-bottom: 0; }
+  .frota-label { font-size: 12px; font-weight: 500; color: var(--gray-600); width: 110px; flex-shrink: 0; text-align: right; }
+  .frota-count { font-size: 13px; font-weight: 700; color: var(--gray-900); width: 28px; text-align: right; flex-shrink: 0; }
+  .frota-bar-wrap { flex: 1; height: 8px; background: var(--gray-100); border-radius: 99px; overflow: hidden; }
+  .frota-bar-fill { height: 100%; border-radius: 99px; background: #0369a1; transition: width 0.45s cubic-bezier(.4,0,.2,1); }
+  .frota-pct { font-size: 11px; color: var(--gray-400); width: 32px; flex-shrink: 0; }
 
   /* ── EDIT BUTTON ── */
   .btn-edit { background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 4px; border-radius: 4px; margin-right: 2px; }
@@ -267,6 +279,26 @@
   .filter-bar input[type=date] { padding: 6px 10px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 13px; color: var(--gray-700); }
   .filter-bar label { font-size: 12px; color: var(--gray-500); }
 
+  /* ── AUTOMAÇÃO ── */
+  .auto-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+  .auto-header-left h2 { font-size: 16px; font-weight: 600; color: var(--gray-900); }
+  .auto-header-left p  { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .auto-count-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; background: var(--brand-light); color: var(--brand); border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .lead-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; transition: box-shadow 0.12s; }
+  .lead-card:hover { box-shadow: var(--shadow-md); }
+  .lead-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--brand-light); color: var(--brand); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; text-transform: uppercase; }
+  .lead-info { flex: 1; min-width: 0; }
+  .lead-name { font-size: 14px; font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lead-phone { font-size: 12px; color: var(--gray-500); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+  .lead-extra { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+  .lead-status { flex-shrink: 0; }
+  .badge-novo { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; background: #fef3c7; color: #92400e; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-registrado { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; background: var(--green-bg); color: var(--green); border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .btn-registrar { padding: 7px 16px; background: var(--brand); color: #fff; border: none; border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+  .btn-registrar:hover { background: var(--brand-dark); }
+  .auto-search { padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 13px; color: var(--gray-700); width: 260px; }
+  .auto-search:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-light); }
+
   /* ── AGENDA ── */
   .agenda-connect-wrap {
     display: flex; flex-direction: column; align-items: center;
@@ -359,6 +391,10 @@
       <div class="nav-item" onclick="showView('agenda')">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Agenda
+      </div>
+      <div class="nav-item" onclick="showView('automacao')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+        Automação
       </div>
     </nav>
   </aside>
@@ -541,6 +577,16 @@
           <div id="d-faltantes-list"></div>
         </div>
 
+        <!-- FROTA DISTRIBUIÇÃO -->
+        <div id="d-frota-card" class="frota-card" style="display:none">
+          <div class="frota-card-hdr">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Distribuição de frota (placas ativas)
+            <span id="d-frota-total" style="margin-left:auto;font-weight:400;font-size:11px;color:var(--gray-400)"></span>
+          </div>
+          <div id="d-frota-dist"></div>
+        </div>
+
         <!-- CHARTS -->
         <div class="charts-grid">
 
@@ -627,14 +673,26 @@
               </div>
             </div>
           </div>
-          <div class="field" style="margin-bottom:14px">
-            <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(opcional · múltipla escolha)</span></label>
-            <div class="rg" id="rg-modulos">
-              <button type="button" class="rb" data-val="Comercial">Comercial</button>
-              <button type="button" class="rb" data-val="Gestão">Gestão</button>
-              <button type="button" class="rb" data-val="Eventos">Eventos</button>
-              <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
-              <button type="button" class="rb" data-val="Outros">Outros</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+            <div class="field">
+              <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(múltipla escolha)</span></label>
+              <div class="rg" id="rg-modulos">
+                <button type="button" class="rb" data-val="Comercial">Comercial</button>
+                <button type="button" class="rb" data-val="Gestão">Gestão</button>
+                <button type="button" class="rb" data-val="Eventos">Eventos</button>
+                <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
+                <button type="button" class="rb" data-val="Outros">Outros</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(frota)</span></label>
+              <div class="rg" id="rg-placas">
+                <button type="button" class="rb" data-val="Até 10">Até 10</button>
+                <button type="button" class="rb" data-val="11-50">11-50</button>
+                <button type="button" class="rb" data-val="51-100">51-100</button>
+                <button type="button" class="rb" data-val="101-500">101-500</button>
+                <button type="button" class="rb" data-val="Acima de 500">Acima de 500</button>
+              </div>
             </div>
           </div>
           <div class="form-section-label">Agendamento <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:10px">(opcional)</span></div>
@@ -716,6 +774,7 @@
                 <th style="width:75px">Ativado</th>
                 <th style="width:90px">Respondeu</th>
                 <th style="width:80px">Vendido</th>
+                <th style="width:100px">Placas</th>
                 <th style="width:80px">Agendado</th>
                 <th style="width:85px">Remarcado</th>
                 <th style="width:80px">Faltou</th>
@@ -726,6 +785,11 @@
           </table>
           <div class="empty" id="empty-contatos" style="display:none">Nenhum contato encontrado.</div>
         </div>
+      </div>
+
+      <!-- ═══ AUTOMAÇÃO ═══ -->
+      <div class="view" id="view-automacao">
+        <div id="automacao-content"></div>
       </div>
 
       <!-- ═══ AGENDA ═══ -->
@@ -777,15 +841,27 @@
           <input type="text" id="e-outro-origem" placeholder="Descreva a origem...">
         </div>
       </div>
-      <!-- Módulos -->
-      <div class="field" style="margin-bottom:14px">
-        <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(múltipla escolha)</span></label>
-        <div class="rg" id="e-rg-modulos">
-          <button type="button" class="rb" data-val="Comercial">Comercial</button>
-          <button type="button" class="rb" data-val="Gestão">Gestão</button>
-          <button type="button" class="rb" data-val="Eventos">Eventos</button>
-          <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
-          <button type="button" class="rb" data-val="Outros">Outros</button>
+      <!-- Módulos + Placas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div class="field">
+          <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(múltipla escolha)</span></label>
+          <div class="rg" id="e-rg-modulos">
+            <button type="button" class="rb" data-val="Comercial">Comercial</button>
+            <button type="button" class="rb" data-val="Gestão">Gestão</button>
+            <button type="button" class="rb" data-val="Eventos">Eventos</button>
+            <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
+            <button type="button" class="rb" data-val="Outros">Outros</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(frota)</span></label>
+          <div class="rg" id="e-rg-placas">
+            <button type="button" class="rb" data-val="Até 10">Até 10</button>
+            <button type="button" class="rb" data-val="11-50">11-50</button>
+            <button type="button" class="rb" data-val="51-100">51-100</button>
+            <button type="button" class="rb" data-val="101-500">101-500</button>
+            <button type="button" class="rb" data-val="Acima de 500">Acima de 500</button>
+          </div>
         </div>
       </div>
       <!-- Qualificado / Ativado / Respondeu / Vendido -->
@@ -904,16 +980,17 @@ document.getElementById('f-data').value = hoje();
 document.getElementById('rel-mes').value = now.getFullYear()+'-'+pad(now.getMonth()+1);
 
 // ── NAVEGAÇÃO ──────────────────────────────────────────────────────────────
-const TITLES = { dashboard:'Dashboard', registrar:'Registrar contato', contatos:'Contatos', relatorio:'Relatório mensal', agenda:'Agenda' };
+const TITLES = { dashboard:'Dashboard', registrar:'Registrar contato', contatos:'Contatos', relatorio:'Relatório mensal', agenda:'Agenda', automacao:'Automação — Leads' };
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
   document.querySelector(`.nav-item[onclick*="${id}"]`).classList.add('active');
   document.getElementById('page-title').textContent = TITLES[id];
-  if (id==='dashboard') renderDashboard();
-  if (id==='contatos')  renderContatos();
-  if (id==='agenda')    renderAgenda();
+  if (id==='dashboard')  renderDashboard();
+  if (id==='contatos')   renderContatos();
+  if (id==='agenda')     renderAgenda();
+  if (id==='automacao')  renderAutomacao();
 }
 
 // ── RADIO GROUPS ───────────────────────────────────────────────────────────
@@ -947,10 +1024,12 @@ function setMultiSelect(id, arr) {
   document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.toggle('active', arr.includes(b.dataset.val)));
 }
 
-['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou',
- 'e-rg-origem','e-rg-qual','e-rg-ativ','e-rg-resp','e-rg-vend','e-rg-agend','e-rg-remasc','e-rg-faltou'].forEach(setupRadio);
+['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou','rg-placas',
+ 'e-rg-origem','e-rg-qual','e-rg-ativ','e-rg-resp','e-rg-vend','e-rg-agend','e-rg-remasc','e-rg-faltou','e-rg-placas'].forEach(setupRadio);
 setupMultiSelect('rg-modulos');
 setupMultiSelect('e-rg-modulos');
+
+const PLACAS_RANGES = ['Até 10','11-50','51-100','101-500','Acima de 500'];
 
 function getRadio(id) {
   const a = document.getElementById(id).querySelector('.rb.active');
@@ -968,6 +1047,7 @@ function resetForm() {
     document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
   });
   setMultiSelect('rg-modulos', []);
+  document.getElementById('rg-placas').querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
   document.getElementById('datas-agend-list').innerHTML = '';
 }
 
@@ -1016,9 +1096,9 @@ function editarContato(id) {
   // módulos (multi-select)
   setMultiSelect('e-rg-modulos', Array.isArray(r.modulos) ? r.modulos : []);
 
-  // campos de rádio simples
+  // campos de rádio simples (inclui placas)
   const radioMap = { qual:'qualificado', ativ:'ativado', resp:'respondeu',
-                     vend:'vendido', agend:'agendado', remasc:'remarcado', faltou:'faltou' };
+                     vend:'vendido', agend:'agendado', remasc:'remarcado', faltou:'faltou', placas:'placas' };
   Object.entries(radioMap).forEach(([k, field]) => {
     const val = r[field] || '';
     document.getElementById('e-rg-'+k).querySelectorAll('.rb')
@@ -1070,6 +1150,7 @@ async function salvarEdicao() {
         remarcado:   getRadio('e-rg-remasc'),
         faltou:      getRadio('e-rg-faltou'),
         modulos:     getMultiSelect('e-rg-modulos'),
+        placas:      getRadio('e-rg-placas'),
         datas_agendamento: Array.from(document.querySelectorAll('.e-data-agend-input'))
           .map(i => i.value).filter(Boolean),
       }),
@@ -1113,6 +1194,7 @@ async function salvarContato() {
         datas_agendamento: Array.from(document.querySelectorAll('.data-agend-input'))
           .map(i => i.value).filter(Boolean),
         modulos: getMultiSelect('rg-modulos'),
+        placas:  getRadio('rg-placas'),
       }),
     });
     if (!res.ok) throw new Error();
@@ -1266,6 +1348,29 @@ function renderDashboard() {
   document.getElementById('d-agend-sub').textContent  = total>0 ? pct(agend,total)+'% do total' : '—';
   document.getElementById('d-remasc-sub').textContent = agend>0 ? pct(remasc,agend)+'% dos agendados' : '—';
   document.getElementById('d-faltou-sub').textContent = remasc>0 ? pct(faltou,remasc)+'% dos remarcados' : '—';
+
+  // ── Distribuição de frota ─────────────────────────────
+  const comPlacas = subset.filter(r => r.placas);
+  const frotaCard = document.getElementById('d-frota-card');
+  if (comPlacas.length) {
+    frotaCard.style.display = '';
+    document.getElementById('d-frota-total').textContent = comPlacas.length + ' contato' + (comPlacas.length!==1?'s':'') + ' com frota informada';
+    const counts = PLACAS_RANGES.map(range => comPlacas.filter(r => r.placas===range).length);
+    const maxCount = Math.max(...counts, 1);
+    document.getElementById('d-frota-dist').innerHTML = PLACAS_RANGES.map((range, i) => {
+      const c = counts[i];
+      const w = Math.round(c / maxCount * 100);
+      return `
+        <div class="frota-row">
+          <span class="frota-label">${range}</span>
+          <span class="frota-count">${c}</span>
+          <div class="frota-bar-wrap"><div class="frota-bar-fill" style="width:${w}%"></div></div>
+          <span class="frota-pct">${pct(c, comPlacas.length)}%</span>
+        </div>`;
+    }).join('');
+  } else {
+    frotaCard.style.display = 'none';
+  }
 
   // ── Lista de faltantes ────────────────────────────────
   const faltantes = subset.filter(r => r.faltou==='sim');
@@ -1495,6 +1600,7 @@ function renderContatos() {
       `<td>${badge(r.ativado)}</td>`+
       `<td>${badge(r.respondeu)}</td>`+
       `<td>${badge(r.vendido)}</td>`+
+      `<td>${r.placas ? `<span class="placas-tag"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>${r.placas}</span>` : '<span style="color:var(--gray-300)">—</span>'}</td>`+
       `<td>${badge(r.agendado)}</td>`+
       `<td>${badge(r.remarcado)}</td>`+
       `<td>${badge(r.faltou)}</td>`+
@@ -1636,10 +1742,11 @@ function gerarRelatorio() {
 // ── EXPORTAR CSV ────────────────────────────────────────────────────────────
 function exportarCSV() {
   if (!dados.length) { alert('Nenhum dado para exportar.'); return; }
-  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido,Módulos,Agendado,Remarcado,Faltou,Datas Agendamento';
+  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido,Placas Ativas,Módulos,Agendado,Remarcado,Faltou,Datas Agendamento';
   const rows = dados.map(r => [
     labelData(r.data), `"${r.nome}"`, r.origem,
     r.qualificado??'', r.ativado??'', r.respondeu??'', r.vendido??'',
+    r.placas??'',
     `"${(Array.isArray(r.modulos)?r.modulos:[]).join('; ')}"`,
     r.agendado??'', r.remarcado??'', r.faltou??'',
     `"${(Array.isArray(r.datas_agendamento)?r.datas_agendamento:[]).map(labelData).join('; ')}"`
@@ -1647,6 +1754,197 @@ function exportarCSV() {
   const blob = new Blob([[header,...rows].join('\n')], {type:'text/csv;charset=utf-8;'});
   const a = Object.assign(document.createElement('a'), { href:URL.createObjectURL(blob), download:`prospeccao_${hoje()}.csv` });
   a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ── AUTOMAÇÃO ───────────────────────────────────────────────────────────────
+let autoLeads = [];      // cache dos leads carregados
+let autoFilter = '';     // texto de busca
+
+function registrarLead(nome) {
+  document.getElementById('f-nome').value = nome;
+  showView('registrar');
+  document.getElementById('f-nome').focus();
+}
+
+function autoSearch(val) {
+  autoFilter = val.toLowerCase();
+  renderAutoLeads();
+}
+
+function renderAutoLeads() {
+  const box = document.getElementById('auto-lista');
+  if (!box) return;
+  const nomeIdx = autoLeads._nomeIdx;
+  const telIdx  = autoLeads._telIdx;
+
+  let visible = autoLeads.filter(row => {
+    const nome = (row[nomeIdx] || '').toLowerCase();
+    const tel  = (row[telIdx]  || '').toLowerCase();
+    return !autoFilter || nome.includes(autoFilter) || tel.includes(autoFilter);
+  });
+
+  if (!visible.length) {
+    box.innerHTML = '<div class="empty">Nenhum lead encontrado.</div>';
+    return;
+  }
+
+  const nomesRegistrados = new Set(dados.map(d => d.nome.toLowerCase().trim()));
+
+  box.innerHTML = visible.map(row => {
+    const nome = (row[nomeIdx] || '—').trim();
+    const tel  = (row[telIdx]  || '').trim();
+    const jaReg = nomesRegistrados.has(nome.toLowerCase());
+    const iniciais = nome.split(' ').slice(0,2).map(p=>p[0]||'').join('').toUpperCase() || '?';
+
+    // monta href WhatsApp se tiver telefone
+    const digits = tel.replace(/\D/g,'');
+    const waHref = digits.length >= 8 ? `https://wa.me/55${digits}` : null;
+
+    // outras colunas extras (exceto nome e tel)
+    const extras = row.filter((_, i) => i !== nomeIdx && i !== telIdx && row[i])
+      .slice(0, 3).join(' · ');
+
+    return `
+      <div class="lead-card">
+        <div class="lead-avatar">${iniciais}</div>
+        <div class="lead-info">
+          <div class="lead-name">${escHtml(nome)}</div>
+          <div class="lead-phone">
+            ${tel ? `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.5 19c-3.09-2.09-5.73-4.73-7.83-7.83A19.79 19.79 0 0 1 1.08 4.18 2 2 0 0 1 3.07 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 7 7l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 17z"/></svg>` : ''}
+            ${waHref
+              ? `<a href="${waHref}" target="_blank" rel="noopener" style="color:var(--green);font-weight:500;text-decoration:none">${escHtml(tel)}</a>`
+              : escHtml(tel) || '<span style="color:var(--gray-300)">Sem telefone</span>'}
+          </div>
+          ${extras ? `<div class="lead-extra">${escHtml(extras)}</div>` : ''}
+        </div>
+        <div class="lead-status" style="display:flex;align-items:center;gap:8px">
+          ${jaReg
+            ? `<span class="badge-registrado"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg> Registrado</span>`
+            : `<button class="btn-registrar" onclick="registrarLead('${escHtml(nome).replace(/'/g,"\\'")}')">
+                 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 Registrar
+               </button>`}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function renderAutomacao() {
+  const box = document.getElementById('automacao-content');
+  box.innerHTML = '<div class="agenda-loading"><div class="spinner"></div> Carregando leads…</div>';
+
+  // verifica conexão Google
+  let connected = false;
+  try {
+    const r = await fetch('/api/calendar/status');
+    connected = (await r.json()).connected;
+  } catch { /* ignora */ }
+
+  if (!connected) {
+    box.innerHTML = `
+      <div class="agenda-connect-wrap">
+        <div class="agenda-connect-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+          </svg>
+        </div>
+        <h2>Conectar conta Google</h2>
+        <p>Para importar leads da planilha, conecte sua conta Google com permissão de planilhas.</p>
+        <a href="/api/v1/auth/google" class="btn-google">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Entrar com Google
+        </a>
+      </div>`;
+    return;
+  }
+
+  // busca leads
+  let headers = [], rows = [];
+  try {
+    const r = await fetch('/api/sheets/leads');
+    if (r.status === 401) {
+      box.innerHTML = `<div class="agenda-error">Sessão expirada. <a href="/api/v1/auth/google" style="color:inherit;font-weight:600;text-decoration:underline">Reconecte.</a></div>`;
+      return;
+    }
+    if (r.status === 403) {
+      box.innerHTML = `
+        <div style="max-width:480px;margin:60px auto;text-align:center;padding:0 20px">
+          <div style="width:64px;height:64px;background:var(--amber-bg);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+            <svg width="28" height="28" fill="none" stroke="var(--amber)" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+          </div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:8px">Permissão adicional necessária</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:24px;line-height:1.6">
+            Reconecte sua conta Google para conceder acesso à leitura de planilhas.<br>
+            Seu acesso ao Calendar não será afetado.
+          </div>
+          <a href="/api/v1/auth/google" class="btn-google" style="display:inline-flex">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Reconectar com Google
+          </a>
+        </div>`;
+      return;
+    }
+    if (!r.ok) throw new Error();
+    ({ headers, rows } = await r.json());
+  } catch {
+    box.innerHTML = `<div class="agenda-error">Erro ao carregar leads. Tente novamente.</div>`;
+    return;
+  }
+
+  if (!rows.length) {
+    box.innerHTML = `<div class="agenda-empty">Nenhum lead encontrado na planilha.</div>`;
+    return;
+  }
+
+  // detecta colunas
+  const nomeIdx = headers.findIndex(h => /nome|name/i.test(h));
+  const telIdx  = headers.findIndex(h => /tel|phone|whatsapp|cel|fone|contato/i.test(h));
+
+  if (nomeIdx === -1) {
+    box.innerHTML = `
+      <div class="agenda-error">
+        Coluna "Nome" não encontrada. Colunas encontradas: <strong>${headers.join(', ')}</strong>
+      </div>`;
+    return;
+  }
+
+  // guarda índices no array para renderAutoLeads
+  autoLeads = rows;
+  autoLeads._nomeIdx = nomeIdx;
+  autoLeads._telIdx  = telIdx !== -1 ? telIdx : -1;
+  autoFilter = '';
+
+  const jaRegCount = rows.filter(row => {
+    const nome = (row[nomeIdx] || '').toLowerCase().trim();
+    return dados.some(d => d.nome.toLowerCase().trim() === nome);
+  }).length;
+
+  box.innerHTML = `
+    <div class="auto-header">
+      <div class="auto-header-left">
+        <h2>Leads da planilha</h2>
+        <p>Colunas: ${headers.map(h=>`<strong>${h}</strong>`).join(', ')}</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="auto-count-badge">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          ${rows.length} leads · ${jaRegCount} já registrados
+        </span>
+        <input class="auto-search" type="text" placeholder="Buscar por nome ou telefone…" oninput="autoSearch(this.value)">
+        <button class="btn" onclick="renderAutomacao()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Atualizar
+        </button>
+      </div>
+    </div>
+    <div id="auto-lista"></div>`;
+
+  renderAutoLeads();
 }
 
 // ── AGENDA ──────────────────────────────────────────────────────────────────
