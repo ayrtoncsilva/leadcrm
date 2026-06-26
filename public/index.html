@@ -120,6 +120,23 @@
   .metric-icon.ic-orange { background: var(--orange-bg); color: var(--orange); }
   .metric-icon.ic-teal   { background: #ccfbf1; color: #0d9488; }
 
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .modal-box { background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); width: 100%; max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; }
+  .modal-hdr { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; }
+  .modal-hdr span { font-size: 15px; font-weight: 600; color: var(--gray-900); }
+  .modal-close { background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 22px; padding: 2px 7px; border-radius: 4px; line-height: 1; }
+  .modal-close:hover { color: var(--gray-700); background: var(--gray-100); }
+  .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+  .modal-footer { padding: 14px 24px; border-top: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
+
+  /* ── MÓDULOS TAGS (tabela) ── */
+  .mod-tag { display: inline-block; padding: 1px 7px; background: var(--brand-light); color: var(--brand); border-radius: 4px; font-size: 10px; font-weight: 600; margin-right: 3px; margin-top: 2px; }
+
+  /* ── EDIT BUTTON ── */
+  .btn-edit { background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 4px; border-radius: 4px; margin-right: 2px; }
+  .btn-edit:hover { color: var(--brand); background: var(--brand-light); }
+
   /* ── DATE LIST (agendamento) ── */
   .date-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
   .date-item { display: flex; align-items: center; gap: 6px; }
@@ -610,6 +627,16 @@
               </div>
             </div>
           </div>
+          <div class="field" style="margin-bottom:14px">
+            <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(opcional · múltipla escolha)</span></label>
+            <div class="rg" id="rg-modulos">
+              <button type="button" class="rb" data-val="Comercial">Comercial</button>
+              <button type="button" class="rb" data-val="Gestão">Gestão</button>
+              <button type="button" class="rb" data-val="Eventos">Eventos</button>
+              <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
+              <button type="button" class="rb" data-val="Outros">Outros</button>
+            </div>
+          </div>
           <div class="form-section-label">Agendamento <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:10px">(opcional)</span></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:12px;margin-bottom:12px">
             <div class="field">
@@ -722,6 +749,121 @@
   </div>
 </div>
 
+<!-- ═══ MODAL EDITAR ═══ -->
+<div id="modal-edit" class="modal-overlay" style="display:none" onclick="if(event.target===this)fecharModal()">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <span>Editar contato</span>
+      <button class="modal-close" onclick="fecharModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- Data + Nome -->
+      <div class="form-row" style="margin-bottom:12px">
+        <div class="field"><label>Data</label><input type="date" id="e-data"></div>
+        <div class="field"><label>Nome / empresa</label><input type="text" id="e-nome" placeholder="Ex: Associação Boa Vista"></div>
+      </div>
+      <!-- Origem -->
+      <div class="field" style="margin-bottom:12px">
+        <label>Origem do lead</label>
+        <div class="rg" id="e-rg-origem">
+          <button type="button" class="rb" data-val="Indicação">Indicação</button>
+          <button type="button" class="rb" data-val="Tráfego pago">Tráfego pago</button>
+          <button type="button" class="rb" data-val="Gustavo">Gustavo</button>
+          <button type="button" class="rb" data-val="Thiago">Thiago</button>
+          <button type="button" class="rb" data-val="Alison">Alison</button>
+          <button type="button" class="rb" data-val="__outro__">Outros</button>
+        </div>
+        <div class="outro-wrap" id="e-outro-wrap">
+          <input type="text" id="e-outro-origem" placeholder="Descreva a origem...">
+        </div>
+      </div>
+      <!-- Módulos -->
+      <div class="field" style="margin-bottom:14px">
+        <label>Módulos apresentados <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(múltipla escolha)</span></label>
+        <div class="rg" id="e-rg-modulos">
+          <button type="button" class="rb" data-val="Comercial">Comercial</button>
+          <button type="button" class="rb" data-val="Gestão">Gestão</button>
+          <button type="button" class="rb" data-val="Eventos">Eventos</button>
+          <button type="button" class="rb" data-val="FIPE Customizado">FIPE Customizado</button>
+          <button type="button" class="rb" data-val="Outros">Outros</button>
+        </div>
+      </div>
+      <!-- Qualificado / Ativado / Respondeu / Vendido -->
+      <div class="form-row-4" style="margin-bottom:12px">
+        <div class="field">
+          <label>Qualificado?</label>
+          <div class="rg" id="e-rg-qual">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Ativado?</label>
+          <div class="rg" id="e-rg-ativ">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Respondeu?</label>
+          <div class="rg" id="e-rg-resp">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+            <button type="button" class="rb" data-val="pendente">Pendente</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Vendido?</label>
+          <div class="rg" id="e-rg-vend">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+      </div>
+      <!-- Agendamento -->
+      <div class="form-section-label">Agendamento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:12px;margin-bottom:12px">
+        <div class="field">
+          <label>Agendado?</label>
+          <div class="rg" id="e-rg-agend">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Remarcado?</label>
+          <div class="rg" id="e-rg-remasc">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Faltou na nova data?</label>
+          <div class="rg" id="e-rg-faltou">
+            <button type="button" class="rb" data-val="sim">Sim</button>
+            <button type="button" class="rb" data-val="não">Não</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Datas de agendamento</label>
+          <div class="date-list" id="e-datas-agend-list"></div>
+          <button type="button" class="btn-add-date" onclick="adicionarDataAgendEdit()">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar data
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-add" id="btn-salvar-edit" onclick="salvarEdicao()" style="padding:9px 22px">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+        Salvar alterações
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── DADOS ──────────────────────────────────────────────────────────────────
 let dados = [];
@@ -781,16 +923,34 @@ function setupRadio(id) {
       const wasActive = btn.classList.contains('active');
       document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
       if (!wasActive) btn.classList.add('active'); // clica de novo = desmarca
-      if (id==='rg-origem') {
+      // controla campo "outro" em ambos os forms
+      if (id==='rg-origem' || id==='e-rg-origem') {
+        const pfx = id.startsWith('e-') ? 'e-' : '';
         const active = document.getElementById(id).querySelector('.rb.active');
         const isOutro = active?.dataset.val === '__outro__';
-        document.getElementById('outro-wrap').style.display = isOutro ? 'block' : 'none';
-        if (isOutro) document.getElementById('outro-origem').focus();
+        document.getElementById(pfx+'outro-wrap').style.display = isOutro ? 'block' : 'none';
+        if (isOutro) document.getElementById(pfx+'outro-origem').focus();
       }
     });
   });
 }
-['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou'].forEach(setupRadio);
+// Multi-select: permite múltiplos ativos simultaneamente
+function setupMultiSelect(id) {
+  document.getElementById(id).querySelectorAll('.rb').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('active'));
+  });
+}
+function getMultiSelect(id) {
+  return Array.from(document.getElementById(id).querySelectorAll('.rb.active')).map(b => b.dataset.val);
+}
+function setMultiSelect(id, arr) {
+  document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.toggle('active', arr.includes(b.dataset.val)));
+}
+
+['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou',
+ 'e-rg-origem','e-rg-qual','e-rg-ativ','e-rg-resp','e-rg-vend','e-rg-agend','e-rg-remasc','e-rg-faltou'].forEach(setupRadio);
+setupMultiSelect('rg-modulos');
+setupMultiSelect('e-rg-modulos');
 
 function getRadio(id) {
   const a = document.getElementById(id).querySelector('.rb.active');
@@ -807,6 +967,7 @@ function resetForm() {
   ['rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou'].forEach(id => {
     document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
   });
+  setMultiSelect('rg-modulos', []);
   document.getElementById('datas-agend-list').innerHTML = '';
 }
 
@@ -819,6 +980,110 @@ function adicionarDataAgend() {
     `<button type="button" class="btn-rm-date" onclick="this.parentElement.remove()" title="Remover">×</button>`;
   list.appendChild(item);
   item.querySelector('input').focus();
+}
+
+function adicionarDataAgendEdit() {
+  const list = document.getElementById('e-datas-agend-list');
+  const item = document.createElement('div');
+  item.className = 'date-item';
+  item.innerHTML =
+    `<input type="date" class="e-data-agend-input">` +
+    `<button type="button" class="btn-rm-date" onclick="this.parentElement.remove()" title="Remover">×</button>`;
+  list.appendChild(item);
+  item.querySelector('input').focus();
+}
+
+// ── EDITAR CONTATO ─────────────────────────────────────────────────────────
+let editingId = null;
+const ORIGENS_FIXAS = ['Indicação','Tráfego pago','Gustavo','Thiago','Alison'];
+
+function editarContato(id) {
+  const r = dados.find(c => c.id === id);
+  if (!r) return;
+  editingId = id;
+
+  document.getElementById('e-data').value = r.data || '';
+  document.getElementById('e-nome').value = r.nome || '';
+
+  // origem
+  const origemFixa = ORIGENS_FIXAS.includes(r.origem);
+  document.getElementById('e-rg-origem').querySelectorAll('.rb').forEach(b => {
+    b.classList.toggle('active', origemFixa ? b.dataset.val===r.origem : b.dataset.val==='__outro__');
+  });
+  document.getElementById('e-outro-wrap').style.display = origemFixa ? 'none' : 'block';
+  document.getElementById('e-outro-origem').value = origemFixa ? '' : r.origem;
+
+  // módulos (multi-select)
+  setMultiSelect('e-rg-modulos', Array.isArray(r.modulos) ? r.modulos : []);
+
+  // campos de rádio simples
+  const radioMap = { qual:'qualificado', ativ:'ativado', resp:'respondeu',
+                     vend:'vendido', agend:'agendado', remasc:'remarcado', faltou:'faltou' };
+  Object.entries(radioMap).forEach(([k, field]) => {
+    const val = r[field] || '';
+    document.getElementById('e-rg-'+k).querySelectorAll('.rb')
+      .forEach(b => b.classList.toggle('active', b.dataset.val===val));
+  });
+
+  // datas de agendamento
+  const eList = document.getElementById('e-datas-agend-list');
+  eList.innerHTML = '';
+  (Array.isArray(r.datas_agendamento) ? r.datas_agendamento : []).forEach(d => {
+    const item = document.createElement('div');
+    item.className = 'date-item';
+    item.innerHTML =
+      `<input type="date" class="e-data-agend-input" value="${d}">` +
+      `<button type="button" class="btn-rm-date" onclick="this.parentElement.remove()">×</button>`;
+    eList.appendChild(item);
+  });
+
+  document.getElementById('modal-edit').style.display = 'flex';
+}
+
+function fecharModal() {
+  document.getElementById('modal-edit').style.display = 'none';
+  editingId = null;
+}
+
+async function salvarEdicao() {
+  if (!editingId) return;
+  const nome = document.getElementById('e-nome').value.trim();
+  const data = document.getElementById('e-data').value;
+  if (!nome || !data) return;
+
+  let origem = getRadio('e-rg-origem');
+  if (origem === '__outro__') origem = document.getElementById('e-outro-origem').value.trim() || 'Outros';
+
+  const btn = document.getElementById('btn-salvar-edit');
+  btn.disabled = true;
+  try {
+    const res = await fetch(`/api/contacts/${editingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        data, nome, origem,
+        qualificado: getRadio('e-rg-qual'),
+        ativado:     getRadio('e-rg-ativ'),
+        respondeu:   getRadio('e-rg-resp'),
+        vendido:     getRadio('e-rg-vend'),
+        agendado:    getRadio('e-rg-agend'),
+        remarcado:   getRadio('e-rg-remasc'),
+        faltou:      getRadio('e-rg-faltou'),
+        modulos:     getMultiSelect('e-rg-modulos'),
+        datas_agendamento: Array.from(document.querySelectorAll('.e-data-agend-input'))
+          .map(i => i.value).filter(Boolean),
+      }),
+    });
+    if (!res.ok) throw new Error();
+    await loadData();
+    renderContatos();
+    if (document.getElementById('view-dashboard').classList.contains('active')) renderDashboard();
+    fecharModal();
+  } catch {
+    alert('Erro ao salvar alterações.');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // ── REGISTRAR ──────────────────────────────────────────────────────────────
@@ -847,6 +1112,7 @@ async function salvarContato() {
         faltou:      getRadio('rg-faltou'),
         datas_agendamento: Array.from(document.querySelectorAll('.data-agend-input'))
           .map(i => i.value).filter(Boolean),
+        modulos: getMultiSelect('rg-modulos'),
       }),
     });
     if (!res.ok) throw new Error();
@@ -1219,7 +1485,11 @@ function renderContatos() {
     const tr = document.createElement('tr');
     tr.innerHTML =
       `<td>${labelData(r.data)}</td>`+
-      `<td style="font-weight:500">${r.nome}</td>`+
+      `<td><div style="font-weight:500">${r.nome}</div>${
+        Array.isArray(r.modulos)&&r.modulos.length
+          ? '<div style="margin-top:3px">'+r.modulos.map(m=>`<span class="mod-tag">${m}</span>`).join('')+'</div>'
+          : ''
+      }</td>`+
       `<td><span class="origin-tag">${r.origem}</span></td>`+
       `<td>${badge(r.qualificado)}</td>`+
       `<td>${badge(r.ativado)}</td>`+
@@ -1228,7 +1498,14 @@ function renderContatos() {
       `<td>${badge(r.agendado)}</td>`+
       `<td>${badge(r.remarcado)}</td>`+
       `<td>${badge(r.faltou)}</td>`+
-      `<td><button class="btn-del" onclick="remover(${r.id})" title="Remover">
+      `<td style="white-space:nowrap">
+        <button class="btn-edit" onclick="editarContato(${r.id})" title="Editar">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </button>
+        <button class="btn-del" onclick="remover(${r.id})" title="Remover">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/>
           <path d="M10,11v6"/><path d="M14,11v6"/><path d="M9,6V4h6v2"/>
@@ -1359,11 +1636,13 @@ function gerarRelatorio() {
 // ── EXPORTAR CSV ────────────────────────────────────────────────────────────
 function exportarCSV() {
   if (!dados.length) { alert('Nenhum dado para exportar.'); return; }
-  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido,Agendado,Remarcado,Faltou';
+  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido,Módulos,Agendado,Remarcado,Faltou,Datas Agendamento';
   const rows = dados.map(r => [
-    labelData(r.data),`"${r.nome}"`,r.origem,
-    r.qualificado??'',r.ativado??'',r.respondeu??'',r.vendido??'',
-    r.agendado??'',r.remarcado??'',r.faltou??''
+    labelData(r.data), `"${r.nome}"`, r.origem,
+    r.qualificado??'', r.ativado??'', r.respondeu??'', r.vendido??'',
+    `"${(Array.isArray(r.modulos)?r.modulos:[]).join('; ')}"`,
+    r.agendado??'', r.remarcado??'', r.faltou??'',
+    `"${(Array.isArray(r.datas_agendamento)?r.datas_agendamento:[]).map(labelData).join('; ')}"`
   ].join(','));
   const blob = new Blob([[header,...rows].join('\n')], {type:'text/csv;charset=utf-8;'});
   const a = Object.assign(document.createElement('a'), { href:URL.createObjectURL(blob), download:`prospeccao_${hoje()}.csv` });

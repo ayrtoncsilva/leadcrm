@@ -14,7 +14,21 @@ function toPlain(row) {
     remarcado: row.remarcado ?? '',
     faltou: row.faltou ?? '',
     datas_agendamento: JSON.parse(row.datas_agendamento || '[]'),
+    modulos: JSON.parse(row.modulos || '[]'),
   };
+}
+
+const ALL_FIELDS = 'data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento, modulos';
+const PLACEHOLDERS = '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?';
+
+function toArgs({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento, modulos }) {
+  return [
+    data, nome, origem,
+    qualificado ?? '', ativado ?? '', respondeu ?? '', vendido ?? '',
+    agendado ?? '', remarcado ?? '', faltou ?? '',
+    JSON.stringify(Array.isArray(datas_agendamento) ? datas_agendamento : []),
+    JSON.stringify(Array.isArray(modulos) ? modulos : []),
+  ];
 }
 
 export const Contact = {
@@ -29,16 +43,21 @@ export const Contact = {
     return result.rows.map(toPlain);
   },
 
-  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento }) {
+  async create(fields) {
     const result = await db.execute({
-      sql: `INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      args: [data, nome, origem,
-        qualificado ?? '', ativado ?? '', respondeu ?? '', vendido ?? '',
-        agendado ?? '', remarcado ?? '', faltou ?? '',
-        JSON.stringify(Array.isArray(datas_agendamento) ? datas_agendamento : [])],
+      sql: `INSERT INTO contacts (${ALL_FIELDS}) VALUES (${PLACEHOLDERS})`,
+      args: toArgs(fields),
     });
     return Number(result.lastInsertRowid);
+  },
+
+  async update(id, fields) {
+    const setClauses = ALL_FIELDS.split(', ').map(f => `${f} = ?`).join(', ');
+    const result = await db.execute({
+      sql: `UPDATE contacts SET ${setClauses} WHERE id = ?`,
+      args: [...toArgs(fields), Number(id)],
+    });
+    return result.rowsAffected;
   },
 
   async delete(id) {

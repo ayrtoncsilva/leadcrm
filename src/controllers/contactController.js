@@ -13,15 +13,38 @@ export async function list(req, res) {
 
 export async function create(req, res) {
   try {
-    const { data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento } = req.body;
+    const { data, nome, origem, qualificado, ativado, respondeu, vendido,
+            agendado, remarcado, faltou, datas_agendamento, modulos } = req.body;
     if (!nome?.trim() || !data) {
       return res.status(400).json({ error: 'Nome e data são obrigatórios.' });
     }
-    const id = await Contact.create({ data, nome: nome.trim(), origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento });
+    const id = await Contact.create({
+      data, nome: nome.trim(), origem, qualificado, ativado, respondeu, vendido,
+      agendado, remarcado, faltou, datas_agendamento, modulos,
+    });
     res.status(201).json({ id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao salvar contato.' });
+  }
+}
+
+export async function update(req, res) {
+  try {
+    const { data, nome, origem, qualificado, ativado, respondeu, vendido,
+            agendado, remarcado, faltou, datas_agendamento, modulos } = req.body;
+    if (!nome?.trim() || !data) {
+      return res.status(400).json({ error: 'Nome e data são obrigatórios.' });
+    }
+    const affected = await Contact.update(req.params.id, {
+      data, nome: nome.trim(), origem, qualificado, ativado, respondeu, vendido,
+      agendado, remarcado, faltou, datas_agendamento, modulos,
+    });
+    if (!affected) return res.status(404).json({ error: 'Contato não encontrado.' });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao atualizar contato.' });
   }
 }
 
