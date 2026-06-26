@@ -118,6 +118,7 @@
   .metric-icon.ic-amber  { background: var(--amber-bg); color: var(--amber); }
   .metric-icon.ic-red    { background: var(--red-bg);   color: var(--red); }
   .metric-icon.ic-orange { background: var(--orange-bg); color: var(--orange); }
+  .metric-icon.ic-teal   { background: #ccfbf1; color: #0d9488; }
 
   /* Card destaque — Vendidos */
   .metric-card.sold {
@@ -174,12 +175,14 @@
   .funnel-bar-fill.f0 { background: var(--blue); }
   .funnel-bar-fill.f1 { background: var(--brand); }
   .funnel-bar-fill.f2 { background: var(--green); }
-  .funnel-bar-fill.f3 { background: #059669; }
-  .funnel-bar-fill.f4 { background: var(--orange); }
+  .funnel-bar-fill.f3 { background: #0d9488; }
+  .funnel-bar-fill.f4 { background: #059669; }
+  .funnel-bar-fill.f5 { background: var(--orange); }
   .funnel-step-pct { font-size: 11px; color: var(--gray-400); width: 34px; flex-shrink: 0; }
 
   /* ── FORM CARD ── */
   .form-card { background: #fff; border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); border: 1px solid var(--gray-200); margin-bottom: 20px; }
+  .form-section-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.4px; margin: 14px 0 10px; padding-top: 14px; border-top: 1px solid var(--gray-200); }
   .form-title { font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 16px; }
   .form-row { display: grid; grid-template-columns: 140px 1fr; gap: 12px; margin-bottom: 12px; }
   .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
@@ -199,10 +202,10 @@
   .btn-add:disabled { opacity: 0.55; cursor: not-allowed; }
 
   /* ── TABLE ── */
-  .table-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); overflow: hidden; }
+  .table-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); overflow-x: auto; }
   .table-header { padding: 14px 18px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
   .table-header span { font-size: 13px; font-weight: 600; color: var(--gray-700); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 960px; }
   th { background: var(--gray-50); color: var(--gray-500); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--gray-200); }
   td { padding: 9px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
@@ -458,6 +461,41 @@
           </div>
         </div>
 
+        <!-- AGENDAMENTOS -->
+        <div class="section-hdr" style="margin-top:4px">Agendamentos</div>
+        <div class="metrics" style="margin-bottom:20px">
+          <div class="metric-card">
+            <div class="metric-icon ic-teal">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="14" x2="12" y2="14" stroke-width="2.5" stroke-linecap="round"/><line x1="16" y1="14" x2="16" y2="14" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="metric-body">
+              <div class="metric-val" id="d-agend">0</div>
+              <div class="metric-label">Agendados</div>
+              <div class="metric-sub" id="d-agend-sub">— do total</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon ic-amber">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            </div>
+            <div class="metric-body">
+              <div class="metric-val" id="d-remasc">0</div>
+              <div class="metric-label">Remarcados</div>
+              <div class="metric-sub" id="d-remasc-sub">— dos agendados</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon ic-red">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div class="metric-body">
+              <div class="metric-val" id="d-faltou">0</div>
+              <div class="metric-label">Faltaram na nova data</div>
+              <div class="metric-sub" id="d-faltou-sub">— dos remarcados</div>
+            </div>
+          </div>
+        </div>
+
         <!-- CHARTS -->
         <div class="charts-grid">
 
@@ -517,30 +555,54 @@
             <div class="field">
               <label>Qualificado?</label>
               <div class="rg" id="rg-qual">
-                <button type="button" class="rb active" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="sim">Sim</button>
                 <button type="button" class="rb" data-val="não">Não</button>
               </div>
             </div>
             <div class="field">
               <label>Ativado?</label>
               <div class="rg" id="rg-ativ">
-                <button type="button" class="rb active" data-val="não">Não</button>
-                <button type="button" class="rb" data-val="sim">Sim</button>
-              </div>
-            </div>
-            <div class="field">
-              <label>Respondeu?</label>
-              <div class="rg" id="rg-resp">
-                <button type="button" class="rb active" data-val="pendente">Pendente</button>
                 <button type="button" class="rb" data-val="sim">Sim</button>
                 <button type="button" class="rb" data-val="não">Não</button>
               </div>
             </div>
             <div class="field">
+              <label>Respondeu?</label>
+              <div class="rg" id="rg-resp">
+                <button type="button" class="rb" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="não">Não</button>
+                <button type="button" class="rb" data-val="pendente">Pendente</button>
+              </div>
+            </div>
+            <div class="field">
               <label>Vendido?</label>
               <div class="rg" id="rg-vend">
-                <button type="button" class="rb active" data-val="não">Não</button>
                 <button type="button" class="rb" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="não">Não</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-section-label">Agendamento <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:10px">(opcional)</span></div>
+          <div class="form-row-3">
+            <div class="field">
+              <label>Agendado?</label>
+              <div class="rg" id="rg-agend">
+                <button type="button" class="rb" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="não">Não</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Remarcado?</label>
+              <div class="rg" id="rg-remasc">
+                <button type="button" class="rb" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="não">Não</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Faltou na nova data?</label>
+              <div class="rg" id="rg-faltou">
+                <button type="button" class="rb" data-val="sim">Sim</button>
+                <button type="button" class="rb" data-val="não">Não</button>
               </div>
             </div>
           </div>
@@ -591,6 +653,9 @@
                 <th style="width:75px">Ativado</th>
                 <th style="width:90px">Respondeu</th>
                 <th style="width:80px">Vendido</th>
+                <th style="width:80px">Agendado</th>
+                <th style="width:85px">Remarcado</th>
+                <th style="width:80px">Faltou</th>
                 <th style="width:40px"></th>
               </tr>
             </thead>
@@ -677,29 +742,34 @@ function showView(id) {
 function setupRadio(id) {
   document.getElementById(id).querySelectorAll('.rb').forEach(btn => {
     btn.addEventListener('click', () => {
+      const wasActive = btn.classList.contains('active');
       document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (!wasActive) btn.classList.add('active'); // clica de novo = desmarca
       if (id==='rg-origem') {
-        const isOutro = btn.dataset.val==='__outro__';
+        const active = document.getElementById(id).querySelector('.rb.active');
+        const isOutro = active?.dataset.val === '__outro__';
         document.getElementById('outro-wrap').style.display = isOutro ? 'block' : 'none';
         if (isOutro) document.getElementById('outro-origem').focus();
       }
     });
   });
 }
-['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend'].forEach(setupRadio);
+['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou'].forEach(setupRadio);
 
 function getRadio(id) {
   const a = document.getElementById(id).querySelector('.rb.active');
-  return a ? a.dataset.val : '';
+  return a ? a.dataset.val : null;
 }
 
 function resetForm() {
   document.getElementById('f-nome').value = '';
   document.getElementById('outro-origem').value = '';
   document.getElementById('outro-wrap').style.display = 'none';
-  ['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend'].forEach(id => {
-    document.getElementById(id).querySelectorAll('.rb').forEach((b,i) => b.classList.toggle('active', i===0));
+  // origem mantém 1ª opção ativa (obrigatório)
+  document.getElementById('rg-origem').querySelectorAll('.rb').forEach((b,i) => b.classList.toggle('active', i===0));
+  // demais campos: sem seleção (opcionais)
+  ['rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou'].forEach(id => {
+    document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
   });
 }
 
@@ -724,6 +794,9 @@ async function salvarContato() {
         ativado:     getRadio('rg-ativ'),
         respondeu:   getRadio('rg-resp'),
         vendido:     getRadio('rg-vend'),
+        agendado:    getRadio('rg-agend'),
+        remarcado:   getRadio('rg-remasc'),
+        faltou:      getRadio('rg-faltou'),
       }),
     });
     if (!res.ok) throw new Error();
@@ -850,6 +923,9 @@ function renderDashboard() {
   const nresp    = subset.filter(r => r.respondeu==='não').length;
   const pendente = subset.filter(r => r.respondeu==='pendente').length;
   const vend     = subset.filter(r => r.vendido==='sim').length;
+  const agend    = subset.filter(r => r.agendado==='sim').length;
+  const remasc   = subset.filter(r => r.remarcado==='sim').length;
+  const faltou   = subset.filter(r => r.faltou==='sim').length;
   const taxa     = pct(ativ, total);
 
   // KPI values
@@ -862,12 +938,18 @@ function renderDashboard() {
   document.getElementById('d-vend').textContent      = vend;
   document.getElementById('d-taxa-vend').textContent = pct(vend, total)+'%';
   document.getElementById('d-vend-ativ').textContent = pct(vend, ativ)+'%';
+  document.getElementById('d-agend').textContent     = agend;
+  document.getElementById('d-remasc').textContent    = remasc;
+  document.getElementById('d-faltou').textContent    = faltou;
 
   // KPI subs
-  document.getElementById('d-qual-sub').textContent  = total>0 ? pct(qual,total)+'% do total' : '—';
-  document.getElementById('d-ativ-sub').textContent  = total>0 ? pct(ativ,total)+'% do total' : '—';
-  document.getElementById('d-resp-sub').textContent  = total>0 ? pct(resp,total)+'% de resposta' : '—';
-  document.getElementById('d-nresp-sub').textContent = total>0 ? pct(nresp,total)+'% sem resp.' : '—';
+  document.getElementById('d-qual-sub').textContent   = total>0 ? pct(qual,total)+'% do total' : '—';
+  document.getElementById('d-ativ-sub').textContent   = total>0 ? pct(ativ,total)+'% do total' : '—';
+  document.getElementById('d-resp-sub').textContent   = total>0 ? pct(resp,total)+'% de resposta' : '—';
+  document.getElementById('d-nresp-sub').textContent  = total>0 ? pct(nresp,total)+'% sem resp.' : '—';
+  document.getElementById('d-agend-sub').textContent  = total>0 ? pct(agend,total)+'% do total' : '—';
+  document.getElementById('d-remasc-sub').textContent = agend>0 ? pct(remasc,agend)+'% dos agendados' : '—';
+  document.getElementById('d-faltou-sub').textContent = remasc>0 ? pct(faltou,remasc)+'% dos remarcados' : '—';
 
   // ── Gráfico: Resultado ────────────────────────────────
   const ctxR = document.getElementById('chart-resultado').getContext('2d');
@@ -1017,8 +1099,9 @@ function renderDashboard() {
     { label:'Abordados',    val:total, cls:'f0' },
     { label:'Qualificados', val:qual,  cls:'f1' },
     { label:'Ativados',     val:ativ,  cls:'f2' },
-    { label:'Responderam',  val:resp,  cls:'f3' },
-    { label:'Vendidos',     val:vend,  cls:'f4' },
+    { label:'Agendados',    val:agend, cls:'f3' },
+    { label:'Responderam',  val:resp,  cls:'f4' },
+    { label:'Vendidos',     val:vend,  cls:'f5' },
   ];
   document.getElementById('funil-bars').innerHTML = steps.map(s => {
     const w = total>0 ? pct(s.val,total) : 0;
@@ -1062,7 +1145,10 @@ function renderContatos() {
       `<td>${badge(r.qualificado)}</td>`+
       `<td>${badge(r.ativado)}</td>`+
       `<td>${badge(r.respondeu)}</td>`+
-      `<td>${badge(r.vendido ?? 'não')}</td>`+
+      `<td>${badge(r.vendido)}</td>`+
+      `<td>${badge(r.agendado)}</td>`+
+      `<td>${badge(r.remarcado)}</td>`+
+      `<td>${badge(r.faltou)}</td>`+
       `<td><button class="btn-del" onclick="remover(${r.id})" title="Remover">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/>
@@ -1093,6 +1179,7 @@ async function remover(id) {
 }
 
 function badge(val) {
+  if (!val) return '<span class="badge" style="background:var(--gray-100);color:var(--gray-400)">—</span>';
   const cls = val==='sim' ? 'sim' : val==='não' ? 'nao' : 'pendente';
   return `<span class="badge ${cls}">${val}</span>`;
 }
@@ -1109,6 +1196,9 @@ function gerarRelatorio() {
   const resp   = subset.filter(d => d.respondeu==='sim').length;
   const nresp  = subset.filter(d => d.respondeu==='não').length;
   const vend   = subset.filter(d => d.vendido==='sim').length;
+  const agend  = subset.filter(d => d.agendado==='sim').length;
+  const remasc = subset.filter(d => d.remarcado==='sim').length;
+  const faltou = subset.filter(d => d.faltou==='sim').length;
   const taxa   = pct(ativ, total);
   const txResp = pct(resp, total);
 
@@ -1130,7 +1220,10 @@ function gerarRelatorio() {
         ${[['Total abordados',total,''],['Qualificados',qual,total>0?pct(qual,total)+'% do total':''],
            ['Ativados',ativ,total>0?pct(ativ,total)+'% do total':''],['Responderam',resp,txResp+'% de resposta'],
            ['Não responderam',nresp,''],['Taxa de conversão',taxa+'%','ativados / abordados'],
-           ['Vendidos',vend,total>0?pct(vend,total)+'% do total':'']]
+           ['Vendidos',vend,total>0?pct(vend,total)+'% do total':''],
+           ['Agendados',agend,total>0?pct(agend,total)+'% do total':''],
+           ['Remarcados',remasc,agend>0?pct(remasc,agend)+'% dos agendados':''],
+           ['Faltaram nova data',faltou,remasc>0?pct(faltou,remasc)+'% dos remarcados':'']]
           .map(([label,val,sub])=>`
             <div style="background:var(--gray-50);border-radius:8px;padding:12px 14px;border:1px solid var(--gray-200)">
               <div style="font-size:10px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px">${label}</div>
@@ -1158,8 +1251,12 @@ function gerarRelatorio() {
 // ── EXPORTAR CSV ────────────────────────────────────────────────────────────
 function exportarCSV() {
   if (!dados.length) { alert('Nenhum dado para exportar.'); return; }
-  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido';
-  const rows = dados.map(r => [labelData(r.data),`"${r.nome}"`,r.origem,r.qualificado,r.ativado,r.respondeu,r.vendido??'não'].join(','));
+  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido,Agendado,Remarcado,Faltou';
+  const rows = dados.map(r => [
+    labelData(r.data),`"${r.nome}"`,r.origem,
+    r.qualificado??'',r.ativado??'',r.respondeu??'',r.vendido??'',
+    r.agendado??'',r.remarcado??'',r.faltou??''
+  ].join(','));
   const blob = new Blob([[header,...rows].join('\n')], {type:'text/csv;charset=utf-8;'});
   const a = Object.assign(document.createElement('a'), { href:URL.createObjectURL(blob), download:`prospeccao_${hoje()}.csv` });
   a.click(); URL.revokeObjectURL(a.href);

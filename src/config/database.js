@@ -26,9 +26,15 @@ export async function initDb() {
       expiry_date   INTEGER
     )
   `);
-  // migração: adiciona coluna vendido em tabelas já existentes
-  try {
-    await db.execute(`ALTER TABLE contacts ADD COLUMN vendido TEXT NOT NULL DEFAULT 'não'`);
-  } catch { /* coluna já existe */ }
+  // migrações cumulativas — idempotentes
+  const migrations = [
+    `ALTER TABLE contacts ADD COLUMN vendido   TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN agendado  TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN remarcado TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN faltou    TEXT NOT NULL DEFAULT ''`,
+  ];
+  for (const sql of migrations) {
+    try { await db.execute(sql); } catch { /* coluna já existe */ }
+  }
   console.log('Banco Turso pronto.');
 }

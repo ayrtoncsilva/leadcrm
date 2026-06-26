@@ -6,10 +6,13 @@ function toPlain(row) {
     data: row.data,
     nome: row.nome,
     origem: row.origem,
-    qualificado: row.qualificado,
-    ativado: row.ativado,
-    respondeu: row.respondeu,
-    vendido: row.vendido ?? 'não',
+    qualificado: row.qualificado ?? '',
+    ativado: row.ativado ?? '',
+    respondeu: row.respondeu ?? '',
+    vendido: row.vendido ?? '',
+    agendado: row.agendado ?? '',
+    remarcado: row.remarcado ?? '',
+    faltou: row.faltou ?? '',
   };
 }
 
@@ -25,10 +28,13 @@ export const Contact = {
     return result.rows.map(toPlain);
   },
 
-  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido }) {
+  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou }) {
     const result = await db.execute({
-      sql: 'INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      args: [data, nome, origem, qualificado, ativado, respondeu, vendido ?? 'não'],
+      sql: `INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [data, nome, origem,
+        qualificado ?? '', ativado ?? '', respondeu ?? '', vendido ?? '',
+        agendado ?? '', remarcado ?? '', faltou ?? ''],
     });
     return Number(result.lastInsertRowid);
   },
