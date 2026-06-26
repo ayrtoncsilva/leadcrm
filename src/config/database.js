@@ -28,10 +28,11 @@ export async function initDb() {
   `);
   // migrações cumulativas — idempotentes
   const migrations = [
-    `ALTER TABLE contacts ADD COLUMN vendido   TEXT NOT NULL DEFAULT ''`,
-    `ALTER TABLE contacts ADD COLUMN agendado  TEXT NOT NULL DEFAULT ''`,
-    `ALTER TABLE contacts ADD COLUMN remarcado TEXT NOT NULL DEFAULT ''`,
-    `ALTER TABLE contacts ADD COLUMN faltou    TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN vendido            TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN agendado           TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN remarcado          TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN faltou             TEXT NOT NULL DEFAULT ''`,
+    `ALTER TABLE contacts ADD COLUMN datas_agendamento  TEXT NOT NULL DEFAULT '[]'`,
   ];
   for (const sql of migrations) {
     try { await db.execute(sql); } catch { /* coluna já existe */ }

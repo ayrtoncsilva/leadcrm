@@ -13,11 +13,11 @@ export async function list(req, res) {
 
 export async function create(req, res) {
   try {
-    const { data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou } = req.body;
+    const { data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento } = req.body;
     if (!nome?.trim() || !data) {
       return res.status(400).json({ error: 'Nome e data são obrigatórios.' });
     }
-    const id = await Contact.create({ data, nome: nome.trim(), origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou });
+    const id = await Contact.create({ data, nome: nome.trim(), origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento });
     res.status(201).json({ id });
   } catch (err) {
     console.error(err);

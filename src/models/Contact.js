@@ -13,6 +13,7 @@ function toPlain(row) {
     agendado: row.agendado ?? '',
     remarcado: row.remarcado ?? '',
     faltou: row.faltou ?? '',
+    datas_agendamento: JSON.parse(row.datas_agendamento || '[]'),
   };
 }
 
@@ -28,13 +29,14 @@ export const Contact = {
     return result.rows.map(toPlain);
   },
 
-  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou }) {
+  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento }) {
     const result = await db.execute({
-      sql: `INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido, agendado, remarcado, faltou, datas_agendamento)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [data, nome, origem,
         qualificado ?? '', ativado ?? '', respondeu ?? '', vendido ?? '',
-        agendado ?? '', remarcado ?? '', faltou ?? ''],
+        agendado ?? '', remarcado ?? '', faltou ?? '',
+        JSON.stringify(Array.isArray(datas_agendamento) ? datas_agendamento : [])],
     });
     return Number(result.lastInsertRowid);
   },
