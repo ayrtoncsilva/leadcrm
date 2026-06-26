@@ -28,21 +28,30 @@ export async function getStatus(_req, res) {
   res.json({ connected: !!token });
 }
 
-export async function getEvents(_req, res) {
+export async function getEvents(req, res) {
   try {
     const client = await getAuthedClient();
     if (!client) return res.status(401).json({ error: 'not_connected' });
 
     const calendar = google.calendar({ version: 'v3', auth: client });
-    const now = new Date();
-    const until = new Date(now);
-    until.setDate(until.getDate() + 30);
+
+    let timeMin, timeMax;
+    if (req.query.from && req.query.to) {
+      timeMin = new Date(req.query.from + 'T00:00:00').toISOString();
+      timeMax = new Date(req.query.to   + 'T23:59:59').toISOString();
+    } else {
+      const now   = new Date();
+      const until = new Date(now);
+      until.setDate(until.getDate() + 30);
+      timeMin = now.toISOString();
+      timeMax = until.toISOString();
+    }
 
     const { data } = await calendar.events.list({
       calendarId: 'primary',
-      timeMin: now.toISOString(),
-      timeMax: until.toISOString(),
-      maxResults: 50,
+      timeMin,
+      timeMax,
+      maxResults: 100,
       singleEvents: true,
       orderBy: 'startTime',
     });

@@ -360,6 +360,32 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .agenda-error { padding: 16px 18px; background: var(--red-bg); color: var(--red); border-radius: var(--radius); font-size: 13px; }
+
+  /* ── CALENDAR GRID ── */
+  .cal-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--gray-200); gap: 12px; }
+  .cal-nav-center { display: flex; align-items: center; gap: 8px; }
+  .cal-nav-title { font-size: 15px; font-weight: 600; color: var(--gray-900); min-width: 160px; text-align: center; }
+  .cal-nav-btn { background: none; border: 1px solid var(--gray-200); border-radius: 6px; cursor: pointer; padding: 5px 10px; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.12s; display: inline-flex; align-items: center; justify-content: center; }
+  .cal-nav-btn:hover { background: var(--gray-100); border-color: var(--gray-300); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .cal-dow { text-align: center; padding: 8px 4px; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); border-right: 1px solid var(--gray-100); }
+  .cal-dow:last-child { border-right: none; }
+  .cal-cell { min-height: 76px; padding: 5px 5px 4px; border-right: 1px solid var(--gray-100); border-bottom: 1px solid var(--gray-100); cursor: pointer; transition: background 0.1s; display: flex; flex-direction: column; align-items: flex-start; }
+  .cal-cell:nth-child(7n+1) { }
+  .cal-cell:hover { background: var(--gray-50); }
+  .cal-cell.selected { background: var(--brand-light); }
+  .cal-cell.other-month .cal-day-num { color: var(--gray-300); }
+  .cal-cell.other-month .cal-dots { opacity: 0.4; }
+  .cal-day-num { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--gray-700); border-radius: 50%; flex-shrink: 0; }
+  .cal-cell.today .cal-day-num { background: var(--brand); color: #fff; font-weight: 700; }
+  .cal-dots { display: flex; flex-wrap: wrap; gap: 2px; padding: 3px 1px 0; }
+  .cal-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .cal-more { font-size: 10px; color: var(--gray-400); line-height: 6px; margin-left: 1px; }
+  .cal-events-panel { border-top: 1px solid var(--gray-200); padding: 16px 18px; min-height: 80px; }
+  .cal-panel-title { font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .cal-no-events { color: var(--gray-400); font-size: 13px; font-style: italic; }
+  .cal-loading-overlay { text-align: center; padding: 40px 20px; color: var(--gray-400); font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 </style>
 </head>
 <body>
@@ -420,9 +446,9 @@
         <!-- FILTERS -->
         <div class="dash-filters">
           <div class="period-tabs">
-            <button class="period-tab active" onclick="setPeriodo('hoje',this)">Hoje</button>
+            <button class="period-tab" onclick="setPeriodo('hoje',this)">Hoje</button>
             <button class="period-tab" onclick="setPeriodo('semana',this)">Esta semana</button>
-            <button class="period-tab" onclick="setPeriodo('mes',this)">Este mês</button>
+            <button class="period-tab active" onclick="setPeriodo('mes',this)">Este mês</button>
             <button class="period-tab" onclick="setPeriodo('tudo',this)">Tudo</button>
           </div>
           <div class="dash-filter-right">
@@ -685,14 +711,8 @@
               </div>
             </div>
             <div class="field">
-              <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(frota)</span></label>
-              <div class="rg" id="rg-placas">
-                <button type="button" class="rb" data-val="Até 10">Até 10</button>
-                <button type="button" class="rb" data-val="11-50">11-50</button>
-                <button type="button" class="rb" data-val="51-100">51-100</button>
-                <button type="button" class="rb" data-val="101-500">101-500</button>
-                <button type="button" class="rb" data-val="Acima de 500">Acima de 500</button>
-              </div>
+              <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(quantidade)</span></label>
+              <input type="number" id="f-placas" min="0" step="1" placeholder="Ex: 150">
             </div>
           </div>
           <div class="form-section-label">Agendamento <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-300);font-size:10px">(opcional)</span></div>
@@ -854,14 +874,8 @@
           </div>
         </div>
         <div class="field">
-          <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(frota)</span></label>
-          <div class="rg" id="e-rg-placas">
-            <button type="button" class="rb" data-val="Até 10">Até 10</button>
-            <button type="button" class="rb" data-val="11-50">11-50</button>
-            <button type="button" class="rb" data-val="51-100">51-100</button>
-            <button type="button" class="rb" data-val="101-500">101-500</button>
-            <button type="button" class="rb" data-val="Acima de 500">Acima de 500</button>
-          </div>
+          <label>Placas ativas <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--gray-300);font-style:italic">(quantidade)</span></label>
+          <input type="number" id="e-placas" min="0" step="1" placeholder="Ex: 150">
         </div>
       </div>
       <!-- Qualificado / Ativado / Respondeu / Vendido -->
@@ -1024,12 +1038,21 @@ function setMultiSelect(id, arr) {
   document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.toggle('active', arr.includes(b.dataset.val)));
 }
 
-['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou','rg-placas',
- 'e-rg-origem','e-rg-qual','e-rg-ativ','e-rg-resp','e-rg-vend','e-rg-agend','e-rg-remasc','e-rg-faltou','e-rg-placas'].forEach(setupRadio);
+['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend','rg-agend','rg-remasc','rg-faltou',
+ 'e-rg-origem','e-rg-qual','e-rg-ativ','e-rg-resp','e-rg-vend','e-rg-agend','e-rg-remasc','e-rg-faltou'].forEach(setupRadio);
 setupMultiSelect('rg-modulos');
 setupMultiSelect('e-rg-modulos');
 
-const PLACAS_RANGES = ['Até 10','11-50','51-100','101-500','Acima de 500'];
+const PLACAS_RANGES = ['Até 10','11–50','51–100','101–500','Acima de 500'];
+function getPlacasRange(v) {
+  const n = parseInt(v);
+  if (isNaN(n) || n <= 0) return null;
+  if (n <= 10)  return 'Até 10';
+  if (n <= 50)  return '11–50';
+  if (n <= 100) return '51–100';
+  if (n <= 500) return '101–500';
+  return 'Acima de 500';
+}
 
 function getRadio(id) {
   const a = document.getElementById(id).querySelector('.rb.active');
@@ -1047,7 +1070,7 @@ function resetForm() {
     document.getElementById(id).querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
   });
   setMultiSelect('rg-modulos', []);
-  document.getElementById('rg-placas').querySelectorAll('.rb').forEach(b => b.classList.remove('active'));
+  document.getElementById('f-placas').value = '';
   document.getElementById('datas-agend-list').innerHTML = '';
 }
 
@@ -1096,14 +1119,17 @@ function editarContato(id) {
   // módulos (multi-select)
   setMultiSelect('e-rg-modulos', Array.isArray(r.modulos) ? r.modulos : []);
 
-  // campos de rádio simples (inclui placas)
+  // campos de rádio simples
   const radioMap = { qual:'qualificado', ativ:'ativado', resp:'respondeu',
-                     vend:'vendido', agend:'agendado', remasc:'remarcado', faltou:'faltou', placas:'placas' };
+                     vend:'vendido', agend:'agendado', remasc:'remarcado', faltou:'faltou' };
   Object.entries(radioMap).forEach(([k, field]) => {
     const val = r[field] || '';
     document.getElementById('e-rg-'+k).querySelectorAll('.rb')
       .forEach(b => b.classList.toggle('active', b.dataset.val===val));
   });
+
+  // placas (número digitado)
+  document.getElementById('e-placas').value = r.placas || '';
 
   // datas de agendamento
   const eList = document.getElementById('e-datas-agend-list');
@@ -1150,7 +1176,7 @@ async function salvarEdicao() {
         remarcado:   getRadio('e-rg-remasc'),
         faltou:      getRadio('e-rg-faltou'),
         modulos:     getMultiSelect('e-rg-modulos'),
-        placas:      getRadio('e-rg-placas'),
+        placas:      document.getElementById('e-placas').value.trim(),
         datas_agendamento: Array.from(document.querySelectorAll('.e-data-agend-input'))
           .map(i => i.value).filter(Boolean),
       }),
@@ -1194,7 +1220,7 @@ async function salvarContato() {
         datas_agendamento: Array.from(document.querySelectorAll('.data-agend-input'))
           .map(i => i.value).filter(Boolean),
         modulos: getMultiSelect('rg-modulos'),
-        placas:  getRadio('rg-placas'),
+        placas:  document.getElementById('f-placas').value.trim(),
       }),
     });
     if (!res.ok) throw new Error();
@@ -1215,7 +1241,7 @@ function flash(id) {
 }
 
 // ── DASHBOARD — FILTROS ────────────────────────────────────────────────────
-let periodoAtual = 'hoje';
+let periodoAtual = 'mes';
 
 function setPeriodo(p, btn) {
   periodoAtual = p;
@@ -1319,7 +1345,7 @@ function renderDashboard() {
   const ativ     = subset.filter(r => r.ativado==='sim').length;
   const resp     = subset.filter(r => r.respondeu==='sim').length;
   const nresp    = subset.filter(r => r.respondeu==='não').length;
-  const pendente = subset.filter(r => r.respondeu==='pendente').length;
+  const pendente = subset.filter(r => !r.respondeu || r.respondeu==='' || r.respondeu==='pendente').length;
   const vend     = subset.filter(r => r.vendido==='sim').length;
   const agend    = subset.filter(r => r.agendado==='sim').length;
   const remasc   = subset.filter(r => r.remarcado==='sim').length;
@@ -1350,12 +1376,12 @@ function renderDashboard() {
   document.getElementById('d-faltou-sub').textContent = remasc>0 ? pct(faltou,remasc)+'% dos remarcados' : '—';
 
   // ── Distribuição de frota ─────────────────────────────
-  const comPlacas = subset.filter(r => r.placas);
+  const comPlacas = subset.filter(r => r.placas && !isNaN(parseInt(r.placas)));
   const frotaCard = document.getElementById('d-frota-card');
   if (comPlacas.length) {
     frotaCard.style.display = '';
     document.getElementById('d-frota-total').textContent = comPlacas.length + ' contato' + (comPlacas.length!==1?'s':'') + ' com frota informada';
-    const counts = PLACAS_RANGES.map(range => comPlacas.filter(r => r.placas===range).length);
+    const counts = PLACAS_RANGES.map(range => comPlacas.filter(r => getPlacasRange(r.placas) === range).length);
     const maxCount = Math.max(...counts, 1);
     document.getElementById('d-frota-dist').innerHTML = PLACAS_RANGES.map((range, i) => {
       const c = counts[i];
@@ -1850,7 +1876,7 @@ async function renderAutomacao() {
         </div>
         <h2>Conectar conta Google</h2>
         <p>Para importar leads da planilha, conecte sua conta Google com permissão de planilhas.</p>
-        <a href="/api/v1/auth/google" class="btn-google">
+        <a href="/api/v1/auth/google?from=automacao" class="btn-google">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -1868,7 +1894,7 @@ async function renderAutomacao() {
   try {
     const r = await fetch('/api/sheets/leads');
     if (r.status === 401) {
-      box.innerHTML = `<div class="agenda-error">Sessão expirada. <a href="/api/v1/auth/google" style="color:inherit;font-weight:600;text-decoration:underline">Reconecte.</a></div>`;
+      box.innerHTML = `<div class="agenda-error">Sessão expirada. <a href="/api/v1/auth/google?from=automacao" style="color:inherit;font-weight:600;text-decoration:underline">Reconecte.</a></div>`;
       return;
     }
     if (r.status === 403) {
@@ -1882,7 +1908,7 @@ async function renderAutomacao() {
             Reconecte sua conta Google para conceder acesso à leitura de planilhas.<br>
             Seu acesso ao Calendar não será afetado.
           </div>
-          <a href="/api/v1/auth/google" class="btn-google" style="display:inline-flex">
+          <a href="/api/v1/auth/google?from=automacao" class="btn-google" style="display:inline-flex">
             <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
             Reconectar com Google
           </a>
@@ -1955,6 +1981,14 @@ const GCAL_COLORS = {
 };
 const DEFAULT_COLOR = '#5c2d9e';
 
+const CAL_MONTH_NAMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const CAL_DOW_NAMES   = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+let calEvents      = [];
+let calYear        = new Date().getFullYear();
+let calMonth       = new Date().getMonth();
+let calSelectedDay = null;
+
 function fmtEventTime(startDT, endDT) {
   const fmt = dt => new Date(dt).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
   return `${fmt(startDT)} – ${fmt(endDT)}`;
@@ -1998,7 +2032,7 @@ async function renderAgenda() {
         </div>
         <h2>Conectar Google Calendar</h2>
         <p>Conecte sua conta Google para visualizar sua agenda diretamente no CRM.</p>
-        <a href="/api/v1/auth/google" class="btn-google">
+        <a href="/api/v1/auth/google?from=agenda" class="btn-google">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -2011,89 +2045,194 @@ async function renderAgenda() {
     return;
   }
 
-  box.innerHTML = '<div class="agenda-loading"><div class="spinner"></div> Carregando eventos…</div>';
+  // Reset to current month on fresh load
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  calSelectedDay = hoje();
+  await fetchCalMonth();
+}
 
-  let events;
-  try {
-    const r = await fetch('/api/calendar/events');
-    if (r.status === 401) {
-      box.innerHTML = `<div class="agenda-error">Sessão expirada. <a href="/api/v1/auth/google" style="color:inherit;font-weight:600;text-decoration:underline">Reconecte sua conta.</a></div>`;
-      return;
-    }
-    if (!r.ok) throw new Error();
-    events = await r.json();
-  } catch {
-    box.innerHTML = `<div class="agenda-error">Erro ao carregar eventos. Tente novamente.</div>`;
-    return;
-  }
+async function fetchCalMonth() {
+  const box = document.getElementById('agenda-content');
 
-  // Agrupa eventos por data
-  const byDate = {};
-  events.forEach(ev => {
-    const date = ev.start?.date || ev.start?.dateTime?.split('T')[0];
-    if (!date) return;
-    if (!byDate[date]) byDate[date] = [];
-    byDate[date].push(ev);
-  });
+  const firstDay = `${calYear}-${pad(calMonth+1)}-01`;
+  const lastDay  = new Date(calYear, calMonth+1, 0).getDate();
+  const lastDate = `${calYear}-${pad(calMonth+1)}-${pad(lastDay)}`;
 
-  const hj       = hoje();
-  const amanha   = (() => { const d=new Date(); d.setDate(d.getDate()+1); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); })();
-
-  let html = `
+  // Show skeleton with nav while loading
+  box.innerHTML = `
     <div class="agenda-header">
       <span class="agenda-status">Google Calendar conectado</span>
       <button class="btn" onclick="disconnectGoogle()">
         <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Desconectar
       </button>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <div class="cal-nav-center">
+          <button class="cal-nav-btn" onclick="calNavigate(-1)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+          </button>
+          <span class="cal-nav-title">${CAL_MONTH_NAMES[calMonth]} ${calYear}</span>
+          <button class="cal-nav-btn" onclick="calNavigate(1)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+        <button class="cal-nav-btn" onclick="calGoToday()">Hoje</button>
+      </div>
+      <div class="cal-loading-overlay"><div class="spinner"></div> Carregando…</div>
     </div>`;
 
-  const dates = Object.keys(byDate).sort();
-  if (!dates.length) {
-    html += `<div class="agenda-empty">Nenhum evento nos próximos 30 dias.</div>`;
-  } else {
-    dates.forEach(date => {
-      const isToday    = date === hj;
-      const isAmanha   = date === amanha;
-      const label      = isToday ? 'Hoje' : isAmanha ? 'Amanhã' : fmtDayHeader(date);
-
-      html += `<div class="day-group">
-        <div class="day-group-header ${isToday ? 'today' : ''}">
-          ${escHtml(label)}
-          ${isToday ? '<span class="today-chip">Hoje</span>' : ''}
-        </div>`;
-
-      byDate[date].forEach(ev => {
-        const isAllDay = !!ev.start?.date;
-        const time     = isAllDay ? 'Dia todo' : fmtEventTime(ev.start.dateTime, ev.end.dateTime);
-        const color    = ev.colorId ? (GCAL_COLORS[ev.colorId] || DEFAULT_COLOR) : DEFAULT_COLOR;
-        const title    = escHtml(ev.summary || '(Sem título)');
-        const location = ev.location ? `<span>📍 ${escHtml(ev.location)}</span>` : '';
-
-        html += `
-          <div class="event-card">
-            <div class="event-color-bar" style="background:${color}"></div>
-            <div class="event-body">
-              <div class="event-title">${title}</div>
-              <div class="event-meta">
-                <span class="event-time-chip">
-                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-                  ${escHtml(time)}
-                </span>
-                ${location}
-              </div>
-            </div>
-            ${ev.htmlLink ? `<a href="${escHtml(ev.htmlLink)}" target="_blank" class="event-open-link" title="Abrir no Google Calendar">
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>` : ''}
-          </div>`;
-      });
-
-      html += '</div>';
-    });
+  try {
+    const r = await fetch(`/api/calendar/events?from=${firstDay}&to=${lastDate}`);
+    if (r.status === 401) {
+      box.innerHTML = `<div class="agenda-error">Sessão expirada. <a href="/api/v1/auth/google?from=agenda" style="color:inherit;font-weight:600;text-decoration:underline">Reconecte sua conta.</a></div>`;
+      return;
+    }
+    if (!r.ok) throw new Error();
+    calEvents = await r.json();
+  } catch {
+    calEvents = [];
   }
 
-  box.innerHTML = html;
+  renderCalGrid();
+}
+
+function renderCalGrid() {
+  const box = document.getElementById('agenda-content');
+  const hj  = hoje();
+
+  // Build events-by-date map
+  const byDate = {};
+  calEvents.forEach(ev => {
+    const date = ev.start?.date || ev.start?.dateTime?.split('T')[0];
+    if (!date) return;
+    if (!byDate[date]) byDate[date] = [];
+    byDate[date].push(ev);
+  });
+
+  const firstDow   = new Date(calYear, calMonth, 1).getDay();  // 0=Sun
+  const daysInMon  = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevMonLen = new Date(calYear, calMonth, 0).getDate();
+
+  let cells = CAL_DOW_NAMES.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  // Prev-month padding
+  for (let i = firstDow - 1; i >= 0; i--) {
+    const day = prevMonLen - i;
+    const pm  = calMonth === 0 ? calYear - 1 : calYear;
+    const mm  = calMonth === 0 ? 12 : calMonth;
+    const ds  = `${pm}-${pad(mm)}-${pad(day)}`;
+    cells += `<div class="cal-cell other-month" onclick="calSelectDay('${ds}')"><span class="cal-day-num">${day}</span></div>`;
+  }
+
+  // Current month days
+  for (let d = 1; d <= daysInMon; d++) {
+    const ds         = `${calYear}-${pad(calMonth+1)}-${pad(d)}`;
+    const isToday    = ds === hj;
+    const isSelected = ds === calSelectedDay;
+    const evs        = byDate[ds] || [];
+    const dots       = evs.slice(0, 5).map(ev => {
+      const c = ev.colorId ? (GCAL_COLORS[ev.colorId] || DEFAULT_COLOR) : DEFAULT_COLOR;
+      return `<span class="cal-dot" style="background:${c}"></span>`;
+    }).join('');
+    const moreTag = evs.length > 5 ? `<span class="cal-more">+${evs.length-5}</span>` : '';
+    cells += `<div class="cal-cell${isToday?' today':''}${isSelected?' selected':''}" onclick="calSelectDay('${ds}')">
+      <span class="cal-day-num">${d}</span>
+      ${evs.length ? `<div class="cal-dots">${dots}${moreTag}</div>` : ''}
+    </div>`;
+  }
+
+  // Next-month padding
+  const total   = firstDow + daysInMon;
+  const remain  = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let d = 1; d <= remain; d++) {
+    const nm = calMonth === 11 ? calYear + 1 : calYear;
+    const mm = calMonth === 11 ? 1 : calMonth + 2;
+    const ds = `${nm}-${pad(mm)}-${pad(d)}`;
+    cells += `<div class="cal-cell other-month" onclick="calSelectDay('${ds}')"><span class="cal-day-num">${d}</span></div>`;
+  }
+
+  // Events panel for selected day
+  const selEvs = calSelectedDay ? (byDate[calSelectedDay] || []) : [];
+  const selLabel = calSelectedDay
+    ? (calSelectedDay === hj ? 'Hoje — ' + fmtDayHeader(calSelectedDay) : fmtDayHeader(calSelectedDay))
+    : 'Selecione um dia';
+
+  const panelContent = selEvs.length
+    ? selEvs.map(ev => {
+        const isAllDay = !!ev.start?.date;
+        const time  = isAllDay ? 'Dia todo' : fmtEventTime(ev.start.dateTime, ev.end.dateTime);
+        const color = ev.colorId ? (GCAL_COLORS[ev.colorId] || DEFAULT_COLOR) : DEFAULT_COLOR;
+        return `<div class="event-card">
+          <div class="event-color-bar" style="background:${color}"></div>
+          <div class="event-body">
+            <div class="event-title">${escHtml(ev.summary || '(Sem título)')}</div>
+            <div class="event-meta">
+              <span class="event-time-chip">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="11" height="11"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                ${escHtml(time)}
+              </span>
+              ${ev.location ? `<span>📍 ${escHtml(ev.location)}</span>` : ''}
+            </div>
+          </div>
+          ${ev.htmlLink ? `<a href="${escHtml(ev.htmlLink)}" target="_blank" class="event-open-link" title="Abrir no Google Calendar">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>` : ''}
+        </div>`;
+      }).join('')
+    : `<div class="cal-no-events">Sem eventos para este dia.</div>`;
+
+  box.innerHTML = `
+    <div class="agenda-header">
+      <span class="agenda-status">Google Calendar conectado</span>
+      <button class="btn" onclick="disconnectGoogle()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Desconectar
+      </button>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <div class="cal-nav-center">
+          <button class="cal-nav-btn" onclick="calNavigate(-1)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+          </button>
+          <span class="cal-nav-title">${CAL_MONTH_NAMES[calMonth]} ${calYear}</span>
+          <button class="cal-nav-btn" onclick="calNavigate(1)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+        <button class="cal-nav-btn" onclick="calGoToday()">Hoje</button>
+      </div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-events-panel">
+        <div class="cal-panel-title">${escHtml(selLabel)}</div>
+        ${panelContent}
+      </div>
+    </div>`;
+}
+
+async function calNavigate(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  calSelectedDay = null;
+  await fetchCalMonth();
+}
+
+async function calGoToday() {
+  const now   = new Date();
+  calYear     = now.getFullYear();
+  calMonth    = now.getMonth();
+  calSelectedDay = hoje();
+  await fetchCalMonth();
+}
+
+function calSelectDay(ds) {
+  calSelectedDay = ds;
+  renderCalGrid();
 }
 
 async function disconnectGoogle() {
