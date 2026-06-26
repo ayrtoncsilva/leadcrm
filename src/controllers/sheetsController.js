@@ -27,7 +27,11 @@ export async function getLeads(req, res) {
     res.json({ headers: rows[0], rows: rows.slice(1) });
   } catch (err) {
     console.error(err);
-    const code = err.code || err.status;
+    const code    = err.code || err.status;
+    const message = String(err.message || '');
+    if (code === 403 && (message.includes('disabled') || message.includes('not been used') || message.includes('accessNotConfigured'))) {
+      return res.status(503).json({ error: 'api_disabled' });
+    }
     if (code === 403) return res.status(403).json({ error: 'scope_missing' });
     if (code === 401) return res.status(401).json({ error: 'Não autenticado.' });
     res.status(500).json({ error: 'Erro ao acessar planilha.' });
