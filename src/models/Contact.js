@@ -9,6 +9,7 @@ function toPlain(row) {
     qualificado: row.qualificado,
     ativado: row.ativado,
     respondeu: row.respondeu,
+    vendido: row.vendido ?? 'não',
   };
 }
 
@@ -24,10 +25,10 @@ export const Contact = {
     return result.rows.map(toPlain);
   },
 
-  async create({ data, nome, origem, qualificado, ativado, respondeu }) {
+  async create({ data, nome, origem, qualificado, ativado, respondeu, vendido }) {
     const result = await db.execute({
-      sql: 'INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu) VALUES (?, ?, ?, ?, ?, ?)',
-      args: [data, nome, origem, qualificado, ativado, respondeu],
+      sql: 'INSERT INTO contacts (data, nome, origem, qualificado, ativado, respondeu, vendido) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      args: [data, nome, origem, qualificado, ativado, respondeu, vendido ?? 'não'],
     });
     return Number(result.lastInsertRowid);
   },

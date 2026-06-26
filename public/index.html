@@ -18,6 +18,8 @@
     --amber-bg: #fef3c7;
     --blue: #2563eb;
     --blue-bg: #dbeafe;
+    --orange: #f97316;
+    --orange-bg: #fff7ed;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -115,6 +117,23 @@
   .metric-icon.ic-emerald{ background: #d1fae5;         color: #059669; }
   .metric-icon.ic-amber  { background: var(--amber-bg); color: var(--amber); }
   .metric-icon.ic-red    { background: var(--red-bg);   color: var(--red); }
+  .metric-icon.ic-orange { background: var(--orange-bg); color: var(--orange); }
+
+  /* Card destaque — Vendidos */
+  .metric-card.sold {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, #7c3aed 100%);
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(92,45,158,0.3);
+  }
+  .metric-card.sold .metric-val,
+  .metric-card.sold .metric-label { color: #fff; }
+  .metric-card.sold .metric-sub   { color: rgba(255,255,255,0.55); }
+  .metric-card.sold .metric-icon  { background: rgba(255,255,255,0.15); color: #fff; }
+  .sold-stats { display: flex; gap: 28px; margin-left: auto; padding-left: 24px; border-left: 1px solid rgba(255,255,255,0.2); }
+  .sold-stat  { text-align: center; }
+  .sold-stat-val   { font-size: 20px; font-weight: 700; color: #fff; line-height: 1.1; }
+  .sold-stat-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
   .metric-body { flex: 1; min-width: 0; }
   .metric-val { font-size: 28px; font-weight: 700; color: var(--gray-900); line-height: 1.05; letter-spacing: -0.5px; }
   .metric-label { font-size: 12px; color: var(--gray-500); font-weight: 500; margin-top: 2px; }
@@ -156,6 +175,7 @@
   .funnel-bar-fill.f1 { background: var(--brand); }
   .funnel-bar-fill.f2 { background: var(--green); }
   .funnel-bar-fill.f3 { background: #059669; }
+  .funnel-bar-fill.f4 { background: var(--orange); }
   .funnel-step-pct { font-size: 11px; color: var(--gray-400); width: 34px; flex-shrink: 0; }
 
   /* ── FORM CARD ── */
@@ -163,6 +183,7 @@
   .form-title { font-size: 14px; font-weight: 600; color: var(--gray-700); margin-bottom: 16px; }
   .form-row { display: grid; grid-template-columns: 140px 1fr; gap: 12px; margin-bottom: 12px; }
   .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .field label { display: block; font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 5px; }
   .field input { width: 100%; padding: 8px 10px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 13px; color: var(--gray-900); background: #fff; }
   .field input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-light); }
@@ -413,6 +434,28 @@
               <div class="metric-sub">ativados / abordados</div>
             </div>
           </div>
+
+          <!-- Vendidos — card destaque full-width -->
+          <div class="metric-card sold">
+            <div class="metric-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.81-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            </div>
+            <div class="metric-body">
+              <div class="metric-val" id="d-vend">0</div>
+              <div class="metric-label">Vendidos</div>
+              <div class="metric-sub">contratos fechados</div>
+            </div>
+            <div class="sold-stats">
+              <div class="sold-stat">
+                <div class="sold-stat-val" id="d-taxa-vend">0%</div>
+                <div class="sold-stat-label">taxa de venda</div>
+              </div>
+              <div class="sold-stat">
+                <div class="sold-stat-val" id="d-vend-ativ">0%</div>
+                <div class="sold-stat-label">dos ativados</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- CHARTS -->
@@ -470,7 +513,7 @@
               <input type="text" id="outro-origem" placeholder="Descreva a origem...">
             </div>
           </div>
-          <div class="form-row-3">
+          <div class="form-row-4">
             <div class="field">
               <label>Qualificado?</label>
               <div class="rg" id="rg-qual">
@@ -491,6 +534,13 @@
                 <button type="button" class="rb active" data-val="pendente">Pendente</button>
                 <button type="button" class="rb" data-val="sim">Sim</button>
                 <button type="button" class="rb" data-val="não">Não</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Vendido?</label>
+              <div class="rg" id="rg-vend">
+                <button type="button" class="rb active" data-val="não">Não</button>
+                <button type="button" class="rb" data-val="sim">Sim</button>
               </div>
             </div>
           </div>
@@ -540,6 +590,7 @@
                 <th style="width:80px">Qualif.</th>
                 <th style="width:75px">Ativado</th>
                 <th style="width:90px">Respondeu</th>
+                <th style="width:80px">Vendido</th>
                 <th style="width:40px"></th>
               </tr>
             </thead>
@@ -636,7 +687,7 @@ function setupRadio(id) {
     });
   });
 }
-['rg-origem','rg-qual','rg-ativ','rg-resp'].forEach(setupRadio);
+['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend'].forEach(setupRadio);
 
 function getRadio(id) {
   const a = document.getElementById(id).querySelector('.rb.active');
@@ -647,7 +698,7 @@ function resetForm() {
   document.getElementById('f-nome').value = '';
   document.getElementById('outro-origem').value = '';
   document.getElementById('outro-wrap').style.display = 'none';
-  ['rg-origem','rg-qual','rg-ativ','rg-resp'].forEach(id => {
+  ['rg-origem','rg-qual','rg-ativ','rg-resp','rg-vend'].forEach(id => {
     document.getElementById(id).querySelectorAll('.rb').forEach((b,i) => b.classList.toggle('active', i===0));
   });
 }
@@ -670,8 +721,9 @@ async function salvarContato() {
         data: document.getElementById('f-data').value,
         nome, origem,
         qualificado: getRadio('rg-qual'),
-        ativado: getRadio('rg-ativ'),
-        respondeu: getRadio('rg-resp'),
+        ativado:     getRadio('rg-ativ'),
+        respondeu:   getRadio('rg-resp'),
+        vendido:     getRadio('rg-vend'),
       }),
     });
     if (!res.ok) throw new Error();
@@ -791,13 +843,14 @@ const DONUT_OPTS = {
 
 function renderDashboard() {
   const subset = filtrarDashboard();
-  const total  = subset.length;
-  const qual   = subset.filter(r => r.qualificado==='sim').length;
-  const ativ   = subset.filter(r => r.ativado==='sim').length;
-  const resp   = subset.filter(r => r.respondeu==='sim').length;
-  const nresp  = subset.filter(r => r.respondeu==='não').length;
+  const total    = subset.length;
+  const qual     = subset.filter(r => r.qualificado==='sim').length;
+  const ativ     = subset.filter(r => r.ativado==='sim').length;
+  const resp     = subset.filter(r => r.respondeu==='sim').length;
+  const nresp    = subset.filter(r => r.respondeu==='não').length;
   const pendente = subset.filter(r => r.respondeu==='pendente').length;
-  const taxa   = pct(ativ, total);
+  const vend     = subset.filter(r => r.vendido==='sim').length;
+  const taxa     = pct(ativ, total);
 
   // KPI values
   document.getElementById('d-abordados').textContent = total;
@@ -806,6 +859,9 @@ function renderDashboard() {
   document.getElementById('d-resp').textContent      = resp;
   document.getElementById('d-nresp').textContent     = nresp;
   document.getElementById('d-taxa').textContent      = taxa+'%';
+  document.getElementById('d-vend').textContent      = vend;
+  document.getElementById('d-taxa-vend').textContent = pct(vend, total)+'%';
+  document.getElementById('d-vend-ativ').textContent = pct(vend, ativ)+'%';
 
   // KPI subs
   document.getElementById('d-qual-sub').textContent  = total>0 ? pct(qual,total)+'% do total' : '—';
@@ -868,9 +924,10 @@ function renderDashboard() {
 
   const diasMap = {};
   subset.forEach(r => {
-    if (!diasMap[r.data]) diasMap[r.data] = { abord:0, ativ:0 };
+    if (!diasMap[r.data]) diasMap[r.data] = { abord:0, ativ:0, vend:0 };
     diasMap[r.data].abord++;
     if (r.ativado==='sim') diasMap[r.data].ativ++;
+    if (r.vendido==='sim') diasMap[r.data].vend++;
   });
 
   document.getElementById('chart-linha-label').textContent =
@@ -905,6 +962,18 @@ function renderDashboard() {
           pointRadius: dias.length > 20 ? 0 : 3,
           pointHoverRadius: 5,
           pointBackgroundColor: '#16a34a',
+          borderWidth: 2,
+        },
+        {
+          label: 'Vendidos',
+          data: dias.map(d => diasMap[d]?.vend || 0),
+          borderColor: '#f97316',
+          backgroundColor: 'rgba(249,115,22,0.07)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: dias.length > 20 ? 0 : 3,
+          pointHoverRadius: 5,
+          pointBackgroundColor: '#f97316',
           borderWidth: 2,
         }
       ]
@@ -949,6 +1018,7 @@ function renderDashboard() {
     { label:'Qualificados', val:qual,  cls:'f1' },
     { label:'Ativados',     val:ativ,  cls:'f2' },
     { label:'Responderam',  val:resp,  cls:'f3' },
+    { label:'Vendidos',     val:vend,  cls:'f4' },
   ];
   document.getElementById('funil-bars').innerHTML = steps.map(s => {
     const w = total>0 ? pct(s.val,total) : 0;
@@ -992,6 +1062,7 @@ function renderContatos() {
       `<td>${badge(r.qualificado)}</td>`+
       `<td>${badge(r.ativado)}</td>`+
       `<td>${badge(r.respondeu)}</td>`+
+      `<td>${badge(r.vendido ?? 'não')}</td>`+
       `<td><button class="btn-del" onclick="remover(${r.id})" title="Remover">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/>
@@ -1037,6 +1108,7 @@ function gerarRelatorio() {
   const ativ   = subset.filter(d => d.ativado==='sim').length;
   const resp   = subset.filter(d => d.respondeu==='sim').length;
   const nresp  = subset.filter(d => d.respondeu==='não').length;
+  const vend   = subset.filter(d => d.vendido==='sim').length;
   const taxa   = pct(ativ, total);
   const txResp = pct(resp, total);
 
@@ -1057,7 +1129,8 @@ function gerarRelatorio() {
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
         ${[['Total abordados',total,''],['Qualificados',qual,total>0?pct(qual,total)+'% do total':''],
            ['Ativados',ativ,total>0?pct(ativ,total)+'% do total':''],['Responderam',resp,txResp+'% de resposta'],
-           ['Não responderam',nresp,''],['Taxa de conversão',taxa+'%','ativados / abordados']]
+           ['Não responderam',nresp,''],['Taxa de conversão',taxa+'%','ativados / abordados'],
+           ['Vendidos',vend,total>0?pct(vend,total)+'% do total':'']]
           .map(([label,val,sub])=>`
             <div style="background:var(--gray-50);border-radius:8px;padding:12px 14px;border:1px solid var(--gray-200)">
               <div style="font-size:10px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px">${label}</div>
@@ -1085,8 +1158,8 @@ function gerarRelatorio() {
 // ── EXPORTAR CSV ────────────────────────────────────────────────────────────
 function exportarCSV() {
   if (!dados.length) { alert('Nenhum dado para exportar.'); return; }
-  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu';
-  const rows = dados.map(r => [labelData(r.data),`"${r.nome}"`,r.origem,r.qualificado,r.ativado,r.respondeu].join(','));
+  const header = 'Data,Nome,Origem,Qualificado,Ativado,Respondeu,Vendido';
+  const rows = dados.map(r => [labelData(r.data),`"${r.nome}"`,r.origem,r.qualificado,r.ativado,r.respondeu,r.vendido??'não'].join(','));
   const blob = new Blob([[header,...rows].join('\n')], {type:'text/csv;charset=utf-8;'});
   const a = Object.assign(document.createElement('a'), { href:URL.createObjectURL(blob), download:`prospeccao_${hoje()}.csv` });
   a.click(); URL.revokeObjectURL(a.href);

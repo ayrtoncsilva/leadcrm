@@ -26,5 +26,9 @@ export async function initDb() {
       expiry_date   INTEGER
     )
   `);
+  // migração: adiciona coluna vendido em tabelas já existentes
+  try {
+    await db.execute(`ALTER TABLE contacts ADD COLUMN vendido TEXT NOT NULL DEFAULT 'não'`);
+  } catch { /* coluna já existe */ }
   console.log('Banco Turso pronto.');
 }
